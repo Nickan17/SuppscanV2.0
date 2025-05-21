@@ -9,9 +9,12 @@ interface SupplementCardProps {
   onPress: () => void;
 }
 
-export default function SupplementCard({ supplement, onPress }: SupplementCardProps) {
+export default function SupplementCard({
+  supplement,
+  onPress,
+}: SupplementCardProps) {
   const { name, brand, imageUrl, qualityScore, category } = supplement;
-  
+
   const getScoreColor = (score: number) => {
     if (score >= 80) return Colors.success;
     if (score >= 60) return Colors.warning;
@@ -26,10 +29,10 @@ export default function SupplementCard({ supplement, onPress }: SupplementCardPr
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.category}>{category}</Text>
         <View style={styles.scoreContainer}>
-          <View 
+          <View
             style={[
-              styles.scoreCircle, 
-              { backgroundColor: getScoreColor(qualityScore) }
+              styles.scoreCircle,
+              { backgroundColor: getScoreColor(qualityScore) },
             ]}
           >
             <Text style={styles.scoreValue}>{qualityScore}</Text>

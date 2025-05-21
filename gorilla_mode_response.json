@@ -1,0 +1,26 @@
+{
+  "id": "gen-1747798434-BQT7qfvhtkHx1fwJlAnK",
+  "provider": "Meta",
+  "model": "meta-llama/llama-4-scout:free",
+  "object": "chat.completion",
+  "created": 1747798434,
+  "choices": [
+    {
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Based on my knowledge of pre-workout supplements and their typical formulations, here is an estimated ingredient panel for Gorilla Mode Pre-Workout by Gorilla Mind:\n\n- Beta-Alanine: 2000-4000 mg (likely around 3200 mg)\n- Citrulline Malate (2:1): 2000-8000 mg (likely around 5000-6000 mg)\n- Caffeine Anhydrous: 200-300 mg (likely around 250-300 mg)\n- L-Tyrosine: 500-2000 mg (likely around 1000-1500 mg)\n- L-Glutamine: 1000-5000 mg (likely around 2000-3000 mg)\n- L-Arginine: 1000-3000 mg (or as Arginine AKG or other forms, likely around 2000 mg)\n- Glycerol Monostearate (GMS) or Glycerol: possibly included for hydration support, 1000-2000 mg?\n- Coconut Water Powder or other Hydration Agents: possibly included, but exact dosage uncertain?\n- Alpha-GPC (50%): possibly included as a cognitive support ingredient, 50-300 mg?\n\nHowever, to provide a more accurate estimation based on common pre-workout formulas:\n\n- Beta-Alanine: 3200 mg\n- Citrulline Malate (2:1): 6000 mg\n- Caffeine Anhydrous: 275 mg\n- L-Tyrosine: 1250 mg\n- L-Glutamine: 2500 mg\n- Glycerol: 1000 mg?\n- L-Arginine AKG: 2000 mg?\n- Bioperine (Black Pepper Extract): 5-10 mg?\n\nKeep in mind that actual dosages may vary based on Gorilla Mind's proprietary formulation and target effects. Without access to the product's label or confirmed formulation details, these estimates are based on industry standards and common practices in pre-workout supplement formulation.",
+        "refusal": null,
+        "reasoning": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 245,
+    "completion_tokens": 418,
+    "total_tokens": 663
+  }
+}

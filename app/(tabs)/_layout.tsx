@@ -1,34 +1,40 @@
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet } from 'react-native';
-import Colors from '@/constants/Colors';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.inactive,
-        tabBarLabelStyle: styles.tabBarLabel,
-        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: '#01796F',
+        tabBarInactiveTintColor: '#A0E8CE',
+        tabBarStyle: {
+          backgroundColor: '#F8FAF9',
+          borderTopWidth: 0,
+          height: 64,
+        },
         headerShown: false,
+        tabBarLabelStyle: { fontWeight: '600', fontSize: 13 },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Scan',
+          title: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="scan" size={size} color={color} />
+            <MaterialCommunityIcons name="account" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
-          title: 'Search',
+          title: 'Scan',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" size={size} color={color} />
+            <MaterialCommunityIcons
+              name="barcode-scan"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -37,34 +43,19 @@ export default function TabLayout() {
         options={{
           title: 'History',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time" size={size} color={color} />
+            <MaterialCommunityIcons name="history" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="top"
+        name="profile"
         options={{
-          title: 'Top Brands',
+          title: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="trophy" size={size} color={color} />
+            <MaterialCommunityIcons name="account" size={size} color={color} />
           ),
         }}
       />
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: '#ffffff',
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
-    paddingTop: 5,
-    paddingBottom: 5,
-    height: 60,
-  },
-  tabBarLabel: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-});

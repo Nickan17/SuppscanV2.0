@@ -9,19 +9,19 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-export default function SearchBar({ 
-  value, 
-  onChangeText, 
-  placeholder = 'Search' 
+export default function SearchBar({
+  value,
+  onChangeText,
+  placeholder = 'Search',
 }: SearchBarProps) {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <Ionicons 
-          name="search" 
-          size={20} 
-          color={Colors.subtext} 
-          style={styles.searchIcon} 
+        <Ionicons
+          name="search"
+          size={20}
+          color={Colors.subtext}
+          style={styles.searchIcon}
         />
         <TextInput
           style={styles.input}
@@ -32,7 +32,7 @@ export default function SearchBar({
           returnKeyType="search"
         />
         {value.length > 0 && (
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.clearButton}
             onPress={() => onChangeText('')}
           >

@@ -21,24 +21,21 @@ export default function AISummary({ summary }: AISummaryProps) {
           onPress={() => setExpanded(!expanded)}
           style={styles.expandButton}
         >
-          <Ionicons 
-            name={expanded ? "chevron-up" : "chevron-down"} 
-            size={20} 
-            color={Colors.text} 
+          <Ionicons
+            name={expanded ? 'chevron-up' : 'chevron-down'}
+            size={20}
+            color={Colors.text}
           />
         </TouchableOpacity>
       </View>
-      
-      <Text 
-        style={styles.summary}
-        numberOfLines={expanded ? undefined : 3}
-      >
+
+      <Text style={styles.summary} numberOfLines={expanded ? undefined : 3}>
         {summary}
       </Text>
-      
+
       {!expanded && (
-        <TouchableOpacity 
-          style={styles.readMore} 
+        <TouchableOpacity
+          style={styles.readMore}
           onPress={() => setExpanded(true)}
         >
           <Text style={styles.readMoreText}>Read more</Text>

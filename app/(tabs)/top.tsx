@@ -42,8 +42,8 @@ export default function TopBrandsScreen() {
         <Text style={styles.title}>Top Rated Supplements</Text>
       </View>
 
-      <ScrollView 
-        horizontal 
+      <ScrollView
+        horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.categoryScrollView}
         contentContainerStyle={styles.categoryContainer}

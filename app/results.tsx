@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,17 +17,76 @@ import Colors from '@/constants/Colors';
 import QualityScoreCard from '@/components/QualityScoreCard';
 import AISummary from '@/components/AISummary';
 import { getSupplementData } from '@/utils/supplementData';
+import { Supplement } from '@/types/supplement';
 
 export default function ResultsScreen() {
   const router = useRouter();
   const { barcode } = useLocalSearchParams<{ barcode: string }>();
-  const product = getSupplementData(barcode || 'DEMO123456');
+  const [product, setProduct] = useState<Supplement | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadProduct = async () => {
+      if (!barcode) {
+        setError('No barcode provided');
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        const productData = await getSupplementData(barcode);
+        setProduct(productData);
+
+        if (productData.error === 'insufficient_ingredients') {
+          Alert.alert(
+            'Insufficient Ingredient Data',
+            'We need more ingredient detail to give an accurate score.',
+          );
+        } else if (productData.error) {
+          setError('Failed to analyze product');
+        }
+      } catch (err) {
+        console.error('Error loading product:', err);
+        setError('Failed to load product data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProduct();
+  }, [barcode]);
+
+  if (isLoading || !product) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+        <Text style={styles.loadingText}>Analyzing product...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Ionicons name="warning" size={48} color={Colors.error} />
+        <Text style={styles.errorText}>{error}</Text>
+        <TouchableOpacity
+          style={styles.retryButton}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.retryButtonText}>Go Back</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.backButton}
             onPress={() => router.back()}
           >
@@ -48,7 +109,7 @@ export default function ResultsScreen() {
           </View>
         </View>
 
-        <QualityScoreCard 
+        <QualityScoreCard
           score={product.qualityScore}
           clinicalDosing={product.scores.clinicalDosing}
           thirdPartyTesting={product.scores.thirdPartyTesting}
@@ -59,11 +120,17 @@ export default function ResultsScreen() {
 
         <View style={styles.actionsContainer}>
           <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="bookmark-outline" size={20} color={Colors.background} />
+            <Ionicons
+              name="bookmark-outline"
+              size={20}
+              color={Colors.background}
+            />
             <Text style={styles.actionButtonText}>Save to History</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]}>
+          <TouchableOpacity
+            style={[styles.actionButton, styles.secondaryButton]}
+          >
             <Ionicons name="share-outline" size={20} color={Colors.primary} />
             <Text style={styles.secondaryButtonText}>Share Results</Text>
           </TouchableOpacity>
@@ -84,6 +151,43 @@ export default function ResultsScreen() {
 }
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.background,
+    padding: 20,
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: Colors.text,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.background,
+    padding: 20,
+  },
+  errorText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: Colors.text,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  retryButton: {
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: Colors.background,
+    fontSize: 16,
+    fontWeight: '600',
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.background,

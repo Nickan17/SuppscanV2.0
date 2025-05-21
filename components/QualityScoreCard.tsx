@@ -38,29 +38,42 @@ export default function QualityScoreCard({
 
       <View style={styles.breakdownContainer}>
         <Text style={styles.breakdownTitle}>Score Breakdown</Text>
-        
+
         <View style={styles.scoreItem}>
           <View style={styles.scoreItemHeader}>
             <Ionicons name="flask-outline" size={20} color={Colors.text} />
             <Text style={styles.scoreItemTitle}>Clinical Dosing Match</Text>
           </View>
-          <ScoreProgressBar value={clinicalDosing} color={getScoreColor(clinicalDosing)} />
+          <ScoreProgressBar
+            value={clinicalDosing}
+            color={getScoreColor(clinicalDosing)}
+          />
         </View>
-        
+
         <View style={styles.scoreItem}>
           <View style={styles.scoreItemHeader}>
-            <Ionicons name="checkmark-circle-outline" size={20} color={Colors.text} />
+            <Ionicons
+              name="checkmark-circle-outline"
+              size={20}
+              color={Colors.text}
+            />
             <Text style={styles.scoreItemTitle}>Third-Party Testing</Text>
           </View>
-          <ScoreProgressBar value={thirdPartyTesting} color={getScoreColor(thirdPartyTesting)} />
+          <ScoreProgressBar
+            value={thirdPartyTesting}
+            color={getScoreColor(thirdPartyTesting)}
+          />
         </View>
-        
+
         <View style={styles.scoreItem}>
           <View style={styles.scoreItemHeader}>
             <Ionicons name="eye-outline" size={20} color={Colors.text} />
             <Text style={styles.scoreItemTitle}>Brand Transparency</Text>
           </View>
-          <ScoreProgressBar value={brandTransparency} color={getScoreColor(brandTransparency)} />
+          <ScoreProgressBar
+            value={brandTransparency}
+            color={getScoreColor(brandTransparency)}
+          />
         </View>
       </View>
     </View>

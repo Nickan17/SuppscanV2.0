@@ -1,0 +1,26 @@
+{
+  "id": "gen-1747798644-bpdFxW76e1RMOf8v7dIJ",
+  "provider": "Meta",
+  "model": "meta-llama/llama-4-scout:free",
+  "object": "chat.completion",
+  "created": 1747798645,
+  "choices": [
+    {
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Based on my expertise and knowledge of pre-workout supplements, here is a detailed and accurate estimated ingredient panel for Gorilla Mode Pre-Workout by Gorilla Mind:\n\n- Beta-Alanine: 2000-4000 mg (assuming 3200 mg)\n- Citrulline Malate (2:1): 2000-6000 mg (assuming 4000 mg)\n- Creatine Monohydrate: 3000-5000 mg (assuming 4000 mg)\n- Caffeine Anhydrous: 200-300 mg (assuming 250 mg)\n- L-Tyrosine: 500-2000 mg (assuming 1000 mg)\n- L-Glutamine: 1000-5000 mg (assuming 2000 mg)\n- L-Citrulline: 1000-2000 mg (assuming 1500 mg)\n- Coconut Water Powder (or other hydration blend): variable, but often around 1000-2000 mg (assuming 1000 mg)\n- Alpha-GPC (50%): 50-200 mg (assuming 100 mg)\n- N-Acetyl Cysteine (NAC): 500-1000 mg (assuming 500 mg)\n- Himalayan Pink Salt (or other electrolyte blend): variable, but often around 200-500 mg (assuming 200 mg)\n\nKeep in mind that actual dosages may vary depending on the product and manufacturer. These estimates are based on common pre-workout supplement formulations and may not reflect the exact composition of Gorilla Mode Pre-Workout.\n\nHere's a reformatted list with exact numbers:\n\n- Beta-Alanine: 3200 mg\n- Citrulline Malate (2:1): 4000 mg\n- Creatine Monohydrate: 4000 mg\n- Caffeine Anhydrous: 250 mg\n- L-Tyrosine: 1000 mg\n- L-Glutamine: 2000 mg\n- L-Citrulline: 1500 mg\n- Coconut Water Powder: 1000 mg\n- Alpha-GPC (50%): 100 mg\n- N-Acetyl Cysteine (NAC): 500 mg\n- Himalayan Pink Salt: 200 mg",
+        "refusal": null,
+        "reasoning": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 245,
+    "completion_tokens": 458,
+    "total_tokens": 703
+  }
+}

@@ -1,30 +1,115 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   Image,
   SafeAreaView,
-  Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Ionicons } from '@expo/vector-icons';
-import Colors from '@/constants/Colors';
-import BarcodeScanner from '@/components/BarcodeScanner';
+// Try to import shadcn/ui Button, fallback to custom PrimaryButton if not found
+let Button: any;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  Button = require('@/components/ui/button').Button;
+} catch {
+  Button = ({ children, ...props }: any) => (
+    <View
+      style={{
+        backgroundColor: '#01796F',
+        borderRadius: 8,
+        paddingVertical: 12,
+        alignItems: 'center',
+        marginBottom: 12,
+      }}
+      {...props}
+    >
+      <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
+        {children}
+      </Text>
+    </View>
+  );
+}
+
+// Fallback component for when BarcodeScanner fails
+const BarcodeScannerFallback = () => (
+  <View style={styles.fallbackContainer}>
+    <Ionicons name="camera" size={48} color={Colors.subtext} />
+    <Text style={styles.fallbackText}>Scanner unavailable</Text>
+    <Text style={styles.fallbackSubtext}>Please check camera permissions</Text>
+  </View>
+);
+
+// Fallback component for when TestOpenRouter fails
+const AIScoringFallback = () => (
+  <View style={styles.fallbackContainer}>
+    <Ionicons name="warning" size={48} color={Colors.warning} />
+    <Text style={styles.fallbackText}>AI scoring unavailable</Text>
+  </View>
+);
 
 export default function HomeScreen() {
+  // --- existing logic preserved below ---
   const [scanning, setScanning] = useState(true);
+  const [scannedProductName, setScannedProductName] = useState<string | null>(
+    null,
+  );
+  const [hasCameraPermission, setHasCameraPermission] = useState<
+    boolean | null
+  >(null);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+
+  // Request camera permissions on mount
+  useEffect(() => {
+    const requestCameraPermission = async () => {
+      try {
+        console.log('Requesting camera permission...');
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setHasCameraPermission(status === 'granted');
+        if (status !== 'granted') {
+          setCameraError('Camera permission not granted');
+        }
+      } catch (error) {
+        console.error('Error requesting camera permission:', error);
+        setCameraError('Failed to access camera');
+        setHasCameraPermission(false);
+      }
+    };
+
+    requestCameraPermission();
+  }, []);
+
+  if (hasCameraPermission === null) {
+    console.log('[SuppScan] Camera permission loading...');
+    return (
+      <SafeAreaView
+        style={[
+          styles.container,
+          { justifyContent: 'center', alignItems: 'center' },
+        ]}
+      >
+        <Text style={{ fontSize: 24, color: 'black' }}>SuppScan</Text>
+        <ActivityIndicator size="large" color={Colors.primary} />
+        <Text style={styles.loadingText}>Loading camera...</Text>
+      </SafeAreaView>
+    );
+  }
 
   const handleBarcodeScan = (data: string) => {
-    // Simulate barcode scan
-    console.log('Barcode scanned:', data);
-    // Navigate to results page with the scanned barcode data
-    router.push({
-      pathname: '/results',
-      params: { barcode: data },
-    });
+    try {
+      console.log('Barcode scanned:', data);
+      // For demo, map barcode to product name
+      const productName = 'Optimum Nutrition Gold Standard Whey Protein';
+      // In a real app, look up the product name from barcode
+      setScannedProductName(productName);
+      setScanning(false);
+      // Optionally, don't navigate to results page for this demo
+      // router.push({ pathname: '/results', params: { barcode: data } });
+    } catch (error) {
+      console.error('Error handling barcode scan:', error);
+      // Optionally show error to user
+    }
   };
 
   const handleManualSearch = () => {
@@ -32,46 +117,51 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-background">
       <StatusBar style="dark" />
-      <View style={styles.header}>
+      <View className="items-center justify-center flex-1 px-6">
         <Image
-          source={{ uri: 'https://images.pexels.com/photos/3683098/pexels-photo-3683098.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' }}
-          style={styles.headerImage}
+          source={require('../../assets/hero.png')}
+          className="w-48 h-48 mb-6"
         />
-        <View style={styles.headerContent}>
-          <Text style={styles.title}>SuppScan</Text>
-          <Text style={styles.subtitle}>
-            Scan Any Supplement. Get the Truth.
-          </Text>
+        <Text className="text-3xl font-bold text-text mb-2 text-center">
+          Welcome to Supplement Scanner
+        </Text>
+        <Text className="text-base text-center text-text/70 mb-8">
+          Scan or search supplements to reveal their true quality.
+        </Text>
+        <View className="flex flex-col space-y-3">
+          <Button
+            className="bg-primary w-full"
+            accessibilityRole="button"
+            accessibilityLabel="Search Products"
+            onPress={() => router.push('/search')}
+          >
+            Search Products
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            accessibilityRole="button"
+            accessibilityLabel="Scan Barcode"
+            onPress={() => router.push('/scan')}
+          >
+            Scan Barcode
+          </Button>
         </View>
       </View>
-
-      <View style={styles.scannerContainer}>
-        <BarcodeScanner
-          onScan={handleBarcodeScan}
-          active={scanning}
-        />
-        <View style={styles.scannerOverlay}>
-          <View style={styles.scannerTargetContainer}>
-            <View style={styles.scannerTarget} />
-          </View>
-          
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={handleManualSearch}
-          >
-            <Ionicons name="search" size={18} color={Colors.primary} />
-            <Text style={styles.searchButtonText}>
-              Can't scan? Search manually
-            </Text>
-          </TouchableOpacity>
-        </View>
+      {/* DEBUG: Minimal render check */}
+      {/* <BarcodeScanner onScan={handleBarcodeScan} active={scanning} /> */}
+      {/* <TestOpenRouter productName={scannedProductName} /> */}
+      <View style={{ padding: 40 }}>
+        <Text>Render Works ✅</Text>
       </View>
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          SuppScan uses AI to analyze supplement ingredients and provide quality scores based on clinical dosing, third-party testing, and brand transparency.
+          SuppScan uses AI to analyze supplement ingredients and provide quality
+          scores based on clinical dosing, third-party testing, and brand
+          transparency.
         </Text>
       </View>
     </SafeAreaView>
@@ -82,6 +172,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.background,
+  },
+  loadingText: {
+    marginTop: 16,
+    color: Colors.text,
+  },
+  fallbackContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: Colors.background,
+  },
+  fallbackText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: Colors.text,
+    textAlign: 'center',
+  },
+  fallbackSubtext: {
+    marginTop: 8,
+    fontSize: 14,
+    color: Colors.subtext,
+    textAlign: 'center',
   },
   header: {
     position: 'relative',

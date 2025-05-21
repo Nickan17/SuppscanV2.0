@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { Camera, CameraView } from 'expo-camera';
 import Colors from '@/constants/Colors';
 
@@ -8,7 +14,10 @@ interface BarcodeScannerProps {
   active: boolean;
 }
 
-export default function BarcodeScanner({ onScan, active }: BarcodeScannerProps) {
+export default function BarcodeScanner({
+  onScan,
+  active,
+}: BarcodeScannerProps) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
 
@@ -27,12 +36,15 @@ export default function BarcodeScanner({ onScan, active }: BarcodeScannerProps) 
   const handleBarCodeScanned = ({ data }: { data: string }) => {
     if (!scanned && active) {
       setScanned(true);
-      
-      // For demo purposes, using a timeout to simulate processing
+
+      // In a real app, you might want to validate the barcode format here
+      console.log('Scanned barcode:', data);
+
+      // Pass the scanned barcode to the parent component
+      onScan(data);
+
+      // Reset the scanner after a short delay
       setTimeout(() => {
-        // Pass custom barcode for demo
-        onScan('DEMO123456');
-        // Reset for next scan (in real app this would be reset on return to this screen)
         setScanned(false);
       }, 1000);
     }
@@ -47,32 +59,43 @@ export default function BarcodeScanner({ onScan, active }: BarcodeScannerProps) 
             Camera access is limited on web.{'\n'}
             Click anywhere to simulate a scan.
           </Text>
-          <View 
+          <TouchableOpacity
             style={styles.webPlaceholder}
-            onTouchEnd={() => handleBarCodeScanned({ data: 'DEMO123456' })}
-          />
+            activeOpacity={0.9}
+            onPress={() => handleBarCodeScanned({ data: 'DEMO123456' })}
+          >
+            <Text style={styles.scanButtonText}>Tap to Scan</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
   }
 
   if (hasPermission === null) {
-    return <View style={styles.container}><Text>Requesting camera permission...</Text></View>;
+    return (
+      <View style={styles.container}>
+        <Text>Requesting camera permission</Text>
+      </View>
+    );
   }
-
   if (hasPermission === false) {
-    return <View style={styles.container}><Text>No access to camera</Text></View>;
+    return (
+      <View style={styles.container}>
+        <Text>No access to camera</Text>
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
-      <CameraView
-        style={styles.camera}
-        barcodeScannerSettings={{
-          barcodeTypes: ['qr', 'upc_e', 'upc_a', 'ean13', 'ean8', 'code39', 'code128'],
-        }}
-        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-      />
+      {active && (
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          barCodeTypes={['ean13']}
+          style={StyleSheet.absoluteFillObject}
+        />
+      )}
+      {!active && <View style={styles.webPlaceholder} />}
     </View>
   );
 }
@@ -99,6 +122,20 @@ const styles = StyleSheet.create({
   webPlaceholder: {
     width: 250,
     height: 250,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    borderStyle: 'dashed',
+  },
+  scanButtonText: {
+    color: Colors.primary,
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    padding: 16,
     borderWidth: 2,
     borderColor: Colors.primary,
     backgroundColor: 'rgba(255,255,255,0.1)',

@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '@/constants/Colors';
-import SupplementCard from '@/components/SupplementCard';
+
+import ProductCard from '@/components/ProductCard';
 import { getHistoryData } from '@/utils/supplementData';
 
 export default function HistoryScreen() {
@@ -43,44 +43,31 @@ export default function HistoryScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Your Scan History</Text>
+    <SafeAreaView className="flex-1 bg-background">
+      <View className="flex-row items-center justify-between px-4 pt-6 pb-2">
+        <Text className="text-xl font-bold text-text">Your Scan History</Text>
         {history.length > 0 && (
-          <TouchableOpacity 
-            style={styles.clearButton}
-            onPress={handleClearHistory}
-          >
-            <Ionicons name="trash-outline" size={20} color={Colors.error} />
-            <Text style={styles.clearButtonText}>Clear</Text>
+          <TouchableOpacity onPress={handleClearHistory} accessibilityRole="button" accessibilityLabel="Clear scan history" className="flex-row items-center">
+            <Ionicons name="trash-outline" size={20} color="#FF3B30" />
+            <Text className="text-base text-[#FF3B30] ml-1">Clear</Text>
           </TouchableOpacity>
         )}
       </View>
-
       {history.length > 0 ? (
         <FlatList
           data={history}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <SupplementCard
-              supplement={item}
-              onPress={() => handleSelectProduct(item.id)}
-            />
+            <TouchableOpacity onPress={() => handleSelectProduct(item.id)} accessibilityRole="button" accessibilityLabel={`View details for ${item.name}`}>
+              <ProductCard product={item} />
+            </TouchableOpacity>
           )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={{ padding: 16 }}
         />
       ) : (
-        <View style={styles.emptyContainer}>
-          <Ionicons name="time" size={80} color={Colors.lightGray} />
-          <Text style={styles.emptyText}>No scan history yet</Text>
-          <Text style={styles.emptySubtext}>
-            Scanned supplements will appear here
-          </Text>
-          <TouchableOpacity 
-            style={styles.scanButton}
-            onPress={() => router.replace('/')}
-          >
+        <View className="flex-1 items-center justify-center px-6">
+          <Image source={require('../../assets/hero.png')} className="w-40 h-40 mb-6" />
+          <Text className="text-base text-text/70 text-center">No scans yet – start exploring!</Text>
             <Ionicons name="scan" size={20} color={Colors.background} />
             <Text style={styles.scanButtonText}>Start Scanning</Text>
           </TouchableOpacity>

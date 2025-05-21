@@ -7,15 +7,18 @@ interface ScoreProgressBarProps {
   color: string;
 }
 
-export default function ScoreProgressBar({ value, color }: ScoreProgressBarProps) {
+export default function ScoreProgressBar({
+  value,
+  color,
+}: ScoreProgressBarProps) {
   return (
     <View style={styles.container}>
       <View style={styles.barBackground}>
-        <View 
+        <View
           style={[
-            styles.barFill, 
-            { width: `${value}%`, backgroundColor: color }
-          ]} 
+            styles.barFill,
+            { width: `${value}%`, backgroundColor: color },
+          ]}
         />
       </View>
       <Text style={[styles.valueText, { color }]}>{value}%</Text>

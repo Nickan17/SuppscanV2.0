@@ -1,0 +1,26 @@
+{
+  "id": "gen-1747795635-28eSavvqM9u7J9pRX79a",
+  "provider": "DeepInfra",
+  "model": "meta-llama/llama-3-8b-instruct",
+  "object": "chat.completion",
+  "created": 1747795635,
+  "choices": [
+    {
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Based on public knowledge and typical formulations, here's an estimate of the ingredients in Gorilla Mode Pre-Workout by Gorilla Mind:\n\n1. Beta-Alanine\n2. Citrulline Malate\n3. Creatine Monohydrate\n4. Nitric Oxide Boosters (Beetroot Juice, L-Citrulline, L-Arginine)\n5. Branched-Chain Amino Acids (BCAAs) (L-Leucine, L-Isoleucine, L-Valine)\n6. L-Tyrosine\n7. L-Glutamine\n8. L-Carnitine\n9. L-Ornithine\n10. Glycerol Powder\n11. Coconut Water Powder\n12. Natural Flavors\n13. Sweeteners (Sucralose, Acesulfame Potassium)\n14. Calcium Silicate (Anti-Caking Agent)\n15. Silicon Dioxide (Anti-Caking Agent)\n\nPlease note that this is an estimate based on publicly available information and may not accurately reflect the actual ingredients or their proportions in the product.",
+        "refusal": null,
+        "reasoning": null
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 89,
+    "completion_tokens": 226,
+    "total_tokens": 315
+  }
+}
